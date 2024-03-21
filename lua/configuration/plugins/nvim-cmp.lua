@@ -4,7 +4,6 @@ return {
 	dependencies = {
 		"hrsh7th/cmp-buffer",
 		"hrsh7th/cmp-path",
-		"onsails/lspkind.nvim",
 		"L3MON4D3/LuaSnip",
 		"saadparwaiz1/cmp_luasnip",
 		"rafamadriz/friendly-snippets",
@@ -12,7 +11,34 @@ return {
 	config = function()
 		local cmp = require("cmp")
 		local luasnip = require("luasnip")
-		local lspkind = require("lspkind")
+
+		local icons = {
+			Text = "󰉿",
+			Method = "󰆧",
+			Function = "󰊕",
+			Constructor = "",
+			Field = "󰜢",
+			Variable = "󰀫",
+			Class = "󰠱",
+			Interface = "",
+			Module = "",
+			Property = "󰜢",
+			Unit = "󰑭",
+			Value = "󰎠",
+			Enum = "",
+			Keyword = "󰌋",
+			Snippet = "",
+			Color = "󰏘",
+			File = "󰈙",
+			Reference = "󰈇",
+			Folder = "󰉋",
+			EnumMember = "",
+			Constant = "󰏿",
+			Struct = "󰙅",
+			Event = "",
+			Operator = "󰆕",
+			TypeParameter = "",
+		}
 
 		require("luasnip.loaders.from_vscode").lazy_load()
 
@@ -39,11 +65,20 @@ return {
 				{ name = "path" },
 			}),
 			formatting = {
-				format = lspkind.cmp_format({
-					mode = "symbol",
-					maxwidth = 50,
-					ellipsis_char = "...",
-				}),
+				format = function(_, vim_item)
+					local function trim(text)
+						local max = 20
+						if text and text:len() > max then
+							text = text:sub(1, max) .. "..."
+						end
+						return text
+					end
+
+					vim_item.abbr = trim(vim_item.abbr)
+					vim_item.kind = (icons[vim_item.kind] or "") .. "  " .. vim_item.kind
+					vim_item.menu = trim(vim_item.menu)
+					return vim_item
+				end,
 			},
 			window = {
 				completion = cmp.config.window.bordered(),

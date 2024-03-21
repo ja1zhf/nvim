@@ -1,9 +1,18 @@
 return {
-	"kaicataldo/material.vim",
+	"folke/tokyonight.nvim",
+	lazy = false,
 	priority = 1000,
 	config = function()
-		vim.cmd([[colorscheme material]])
-		vim.cmd([[hi Normal guibg=NONE ctermbg=NONE]])
-		vim.cmd([[hi SignColumn guibg=NONE cterm=NONE term=NONE]])
+		local tokyonight = require("tokyonight")
+
+		tokyonight.setup({
+			transparent = true,
+			styles = {
+				sidebars = "transparent",
+				floats = "transparent",
+			},
+		})
+
+		vim.cmd([[colorscheme tokyonight]])
 	end,
 }
