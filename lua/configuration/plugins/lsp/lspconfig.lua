@@ -83,15 +83,24 @@ return {
 					cargo = {
 						allFeatures = true,
 					},
+					formatting = {
+						enable = true,
+					},
 				},
 			},
 		})
 
-		lspconfig["tsserver"].setup({
+		vim.cmd([[
+      augroup FormatAutogroup
+        autocmd!
+        autocmd BufWritePost *.rs lua vim.lsp.buf.format({ async = true })
+      augroup END
+    ]])
+
+		lspconfig["ts_ls"].setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
 		})
-
 		lspconfig["html"].setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
