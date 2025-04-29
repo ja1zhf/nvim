@@ -97,6 +97,11 @@ return {
       augroup END
     ]])
 
+		lspconfig["slint_lsp"].setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
+
 		lspconfig["ts_ls"].setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
